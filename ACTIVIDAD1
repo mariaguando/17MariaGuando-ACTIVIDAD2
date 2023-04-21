@@ -1,0 +1,375 @@
+/* Si la base de datos ya existe la eliminamos */
+BOTAR LA BASE DE DATOS SI EXISTE db_SalesClothes
+IR
+
+/* Crear base de datos Venta Ropa */
+CREAR BASE DE DATOS db_VentasRopa
+IR
+
+/* Poner en uso db_SalesClothes */
+USAR db_SalesClothes
+IR
+
+/* Configurar idioma español en el servidor */
+ESTABLECER IDIOMA Español
+IR
+SELECCIONE @@idioma COMO 'Idioma'
+IR
+
+/* Configurar el formato de fecha */
+ESTABLECER FORMATO DE FECHA dmy
+IR
+
+/* Crear tabla cliente */
+Cliente CREAR TABLA
+(
+    Yo dint,
+    tipo_documento char(3),
+    número_documento char(15),
+    nombres varchar(60),
+    apellido varchar(90),
+    varchar de correo electrónico (80),
+    carácter_teléfono_celular(9),
+    fecha de cumpleaños,
+    bit activo
+    RESTRICCIÓN client_pk CLAVE PRINCIPAL (id)
+);
+
+/* Quitar Primary Key en tabla cliente */
+Cliente ALTER TABLE
+	DROP CONSTRAINT client_pk
+IR
+
+/* Quitar columna id en tabla cliente */
+Cliente ALTER TABLE
+	DROP COLUMN id
+IR
+
+/* columna Agregar cliente */
+Cliente ALTER TABLE
+	AGREGAR id int identidad (1,1)
+IR
+
+/* Agregar clave primaria de restricción */
+Cliente ALTER TABLE
+	AGREGAR RESTRICCIÓN client_pk
+	CLAVE PRINCIPAL (id)
+IR
+
+/* El tipo de documento puede ser DNI � CNE */
+Cliente ALTER TABLE
+	SOLTAR COLUMNA type_document
+IR
+
+/* Agregar restricción para tipo documento */
+Cliente ALTER TABLE
+	AÑADIR type_document char(3)
+	RESTRICCIÓN type_document_client
+	COMPROBAR( tipo_documento='DNI' O tipo_documento='CNE')
+IR
+
+/* Eliminar columna numero_documento de tabla cliente */
+Cliente ALTER TABLE
+	SOLTAR COLUMNA número_documento
+IR
+
+/* El numero de documento solo debe permitir digitos de 0 - 9 */
+Cliente ALTER TABLE
+	AÑADIR number_document char(9)
+	RESTRICCIÓN número_documento_cliente
+	COMPROBAR (número_documento como '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][^AZ]' )
+IR
+
+/* Eliminar columna email de tabla cliente */
+Cliente ALTER TABLE
+	CORREO DE COLUMNA
+IR
+
+/* columna Agregar correo electrónico */
+Cliente ALTER TABLE
+	AGREGAR correo electrónico varchar(80)
+	RESTRICCIÓN email_client
+	COMPROBAR (correo electrónico COMO '%@%._%')
+IR
+
+/* Eliminar columna celular */
+Cliente ALTER TABLE
+	SOLTAR COLUMNA celular_teléfono
+IR
+
+/* Validar que el celular esta conformado por 9 numeros */
+Cliente ALTER TABLE
+	AÑADIR car_teléfono_celular(9)
+	RESTRICCIÓN cellphone_client
+	COMPROBAR (cell_phone como '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] ')
+IR
+
+/* Eliminar columna fecha de nacimiento */
+Cliente ALTER TABLE
+	DROP COLUMN fecha de nacimiento
+IR
+
+/* S�lo debe permitir el registro de clientes mayores de edad */
+Cliente ALTER TABLE
+	AGREGAR fecha de nacimiento
+	CONSTRAINT fecha_nacimiento_cliente
+	CHEQUE((AÑO(GETDATE())- AÑO(fecha de nacimiento)) >= 18)
+IR
+
+/* Eliminar columna activa de tabla cliente */
+Cliente ALTER TABLE
+	DROP COLUMN activo
+IR
+
+/* El valor predeterminado ser� activo al registrar clientes */
+Cliente ALTER TABLE
+	AGREGAR bit activo POR DEFECTO (1)
+IR
+
+/* Crear vendedor de tablas */
+CREAR TABLA vendedor (
+    Yo dint ,
+    tipo_documento char(3),
+    numero_documento char(15) ,
+    nombres varchar(60),
+    apellido varchar(90),
+    salario decimal(8,2),
+    carácter_teléfono_celular(9),
+    varchar de correo electrónico (80),
+    poco activo,
+    RESTRICCIÓN seller_pk CLAVE PRINCIPAL (id)
+);
+
+/* Quitar Primary Key en tabla vendedor */
+Vendedor ALTER TABLE
+	DROP RESTRICCIÓN vendedor_pk
+IR
+
+/* Quitar columna id en tabla vendedor */
+Vendedor ALTER TABLE
+	DROP COLUMN id
+IR
+
+/* columna Agregar vendedor */
+Vendedor ALTER TABLE
+	AGREGAR id int identidad (1,1)
+IR
+
+/* Agregar clave primaria de restricción */
+Vendedor ALTER TABLE
+	AGREGAR RESTRICCIÓN vendedor_pk
+	CLAVE PRINCIPAL (id)
+IR
+
+/* El tipo de documento puede ser DNI o CNE */
+Vendedor ALTER TABLE
+	SOLTAR COLUMNA type_document
+IR
+
+/* Agregar restricción para tipo documento */
+Vendedor ALTER TABLE
+	AÑADIR type_document char(3)
+	RESTRICCIÓN type_document_seller
+	COMPROBAR( tipo_documento='DNI' O tipo_documento='CNE')
+IR
+
+/* Eliminar columna number_document de tabla seller */
+Vendedor ALTER TABLE
+	SOLTAR COLUMNA número_documento
+IR
+
+/* El numero de documento solo debe permitir digitos de 0 - 9 */
+Vendedor ALTER TABLE
+	AÑADIR number_document char(9)
+	RESTRICCIÓN número_documento_vendedor
+	COMPROBAR (número_documento como '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][^AZ]' )
+IR
+
+/* Eliminar columna sueldo de vendedor de tabla */
+Vendedor ALTER TABLE
+	DROP COLUMN salario
+IR
+
+/* Crear columna vendedor en la tabla salario */
+Vendedor ALTER TABLE
+	AÑADIR salario decimal(8,2)
+IR
+
+/*Poner como default '1025' en la columna salario*/
+Vendedor ALTER TABLE
+	AGREGAR PREDETERMINADO 1025 PARA salario
+IR
+
+/* Eliminar columna celular */
+Vendedor ALTER TABLE
+	SOLTAR COLUMNA celular_teléfono
+IR
+
+/* Validar que el celular esta conformado por 9 numeros */
+Vendedor ALTER TABLE
+	AÑADIR car_teléfono_celular(9)
+	RESTRICCIÓN cellphone_seller
+	COMPROBAR (cell_phone como '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9] ')
+IR
+
+/* Eliminar columna email de tabla vendedor */
+Vendedor ALTER TABLE
+	CORREO DE COLUMNA
+IR
+
+/* columna Agregar correo electrónico */
+Vendedor ALTER TABLE
+	AGREGAR correo electrónico varchar(80)
+	RESTRICCIÓN email_seller
+	COMPROBAR (correo electrónico COMO '%@%._%')
+IR
+
+/* Eliminar columna activa de vendedor de tabla */
+Vendedor ALTER TABLE
+	CAÍDA DE COLUMNA activo
+IR
+
+/* El valor predeterminado sera activo al registrar vendedores */
+Vendedor ALTER TABLE
+	AGREGAR bit activo POR DEFECTO (1)
+IR
+
+/* Crear ropa de tabla */
+CREAR ropa de MESA (
+    Yo dint,
+    descripciones varchar(60),
+    marca varchar(60),
+    cantidad interna,
+    tamaño varchar(10) ,
+    precio decimal(8,2) ,
+    bit activo,
+    RESTRICCIÓN clothes_pk CLAVE PRINCIPAL (id)
+);
+
+/* Quitar Primary Key en tabla clothes */
+ALTERAR ropa de MESA
+	DROP RESTRICCIÓN clothes_pk
+IR
+
+/* Quitar columna id en tabla clothes */
+ALTERAR ropa de MESA
+	DROP COLUMN id
+IR
+
+/* columna Agregar id en la tabla clothes */
+ALTERAR ropa de MESA
+	AGREGAR id int identidad (1,1)
+IR
+
+/* Agregar restriccion clave primaria */
+ALTERAR ropa de MESA
+	AÑADIR RESTRICCIÓN clothes_pk
+	CLAVE PRINCIPAL (id)
+IR
+
+/* Eliminar columna activa de ropa de tabla */
+ALTERAR ropa de MESA
+	DROP COLUMN activo
+IR
+
+/* El valor predeterminado ser� activo al registrar ropa */
+ALTERAR ropa de MESA
+	AGREGAR bit activo POR DEFECTO (1)
+IR
+
+/* Crear venta de tablas */
+Venta CREAR TABLA (
+    Yo dint,
+    fecha_hora fechahora,
+	vendedor_id int,
+    id_cliente int,
+    bit activo,
+    RESTRICCIÓN sale_pk CLAVE PRINCIPAL (id)
+);
+
+/* Quitar Primary Key en venta de tabla */
+ALTER TABLE venta
+	DROP RESTRICCIÓN sale_pk
+IR
+
+/* Quitar columna id en tabla sale */
+ALTER TABLE venta
+	DROP COLUMN id
+IR
+
+/* columna Agregar id en la tabla venta */
+ALTER TABLE venta
+	AGREGAR id int identidad (1,1)
+IR
+
+/* Agregar clave primaria de restricción */
+ALTER TABLE venta
+	AÑADIR RESTRICCIÓN sale_pk
+	CLAVE PRINCIPAL (id)
+IR
+
+/* Quitar columna date_time en tabla sale */
+ALTER TABLE venta
+	SOLTAR COLUMNA fecha_hora
+IR
+
+/* columna Agregar fecha_hora en la columna venta */
+ALTER TABLE venta
+	AÑADIR fecha_hora fechahora
+IR
+
+/* Valor predeterminado fecha y hora del servidor */
+ALTER TABLE venta
+	AGREGAR RESTRICCIÓN date_time_sale PREDETERMINADO (GETDATE()) PARA date_time
+IR
+
+/* Eliminar columna activa de venta de tabla */
+ALTER TABLE venta
+	DROP COLUMN activo
+IR
+
+/* El valor predeterminado ser� activo al registrar sales */
+ALTER TABLE venta
+	AGREGAR bit activo POR DEFECTO (1)
+IR
+
+/* Crear tabla venta_detalle */
+CREAR TABLA venta_detalle (
+    Yo dint ,
+    venta_id int ,
+    ropa_id int ,
+    cantidad interna,
+    RESTRICCIÓN sale_detail_pk CLAVE PRINCIPAL (id)
+);
+
+/* Relacionar tabla vendedor con venta*/
+ALTER TABLE venta
+	AGREGAR RESTRICCIÓN sale_seller FOREIGN KEY (seller_id)
+	REFERENCIAS vendedor (id)
+	EN CASCADA DE ACTUALIZACIÓN
+	EN ELIMINAR CASCADA
+IR
+
+/* Relacionar tabla cliente con tabla venta*/
+ALTER TABLE venta
+	AGREGAR RESTRICCIÓN sale_client CLAVE EXTRANJERA (client_id)
+	REFERENCIAS cliente (id)
+	EN CASCADA DE ACTUALIZACIÓN
+	EN ELIMINAR CASCADA
+IR
+
+/* Relacionar tabla venta con sale_detail */
+ALTER TABLE venta_detalle
+	AGREGAR RESTRICCIÓN sale_detail_sale CLAVE EXTERNA (sale_id)
+	REFERENCIAS venta (id)
+	EN CASCADA DE ACTUALIZACIÓN
+	EN ELIMINAR CASCADA
+IR
+
+/* Relacionar tabla ropa con sale_detail */
+ALTER TABLE venta_detalle
+	AGREGAR RESTRICCIÓN sale_detail_clothes CLAVE EXTERNA (ropa_id)
+	REFERENCIAS ropa (id)
+	EN CASCADA DE ACTUALIZACIÓN
+	EN ELIMINAR CASCADA
+IR
