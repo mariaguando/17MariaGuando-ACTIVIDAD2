@@ -1,0 +1,156 @@
+/* Eliminar base de datos */
+DROP DATABASE db_SalesClothes;
+/* Si la base de datos ya existe la eliminamos */
+DROP DATABASE SI EXISTE db_SalesClothes;
+/* Crear base de datos Venta Ropa */
+CREAR BASE DE DATOS db_VentasRopa;
+/* Poner en uso la base de datos */
+USAR db_RopaVentas;
+/* Poner en uso base de datos master */
+USO maestro;
+/* Crear tabla cliente */
+Cliente CREAR TABLA
+(
+	Yo dint,
+	tipo_documento char(3),
+	número_documento char(15),
+	nombres varchar(60),
+	apellido varchar(90),
+	varchar de correo electrónico (80),
+	carácter_teléfono_celular(9),
+	fecha de cumpleaños,
+	bit activo
+	RESTRICCIÓN client_pk CLAVE PRINCIPAL (id)
+);
+
+/* Ver estructura de tabla cliente */
+EXEC sp_columns @table_name = 'cliente';
+
+/* Listar tablas de la base de datos db_SalesClothes */
+SELECCIONE * DESDE INFORMACION_ESQUEMA.TABLAS;
+
+/* Eliminar tabla cliente */
+DROP TABLE cliente;
+
+
+
+
+
+/*Crear tabla cliente*/
+CREAR TABLA cliente (
+    Yo dint ,
+    tipo_documento char(3),
+    número_documento char(15),
+    nombres varchar(60),
+    apellido varchar(90),
+    varchar de correo electrónico (80),
+    carácter_teléfono_celular(9),
+    fecha de cumpleaños,
+    bit activo,
+    RESTRICCIÓN client_pk CLAVE PRIMARIA (id)
+);
+
+
+
+/*Crear ropa de tabla*/
+CREAR ropa de MESA (
+    Yo dint,
+    descripción varchar(60),
+    marca varchar(60),
+    cantidad interna,
+    tamaño varchar(10) ,
+    precio decimal(8,2) ,
+    bit activo,
+    RESTRICCIÓN clothes_pk CLAVE PRINCIPAL (id)
+);
+
+
+
+/*Crear venta de tablas*/
+Venta CREAR TABLA (
+    Yo dint,
+    fecha_hora fechahora ,
+    bit activo,
+    RESTRICCIÓN sale_pk CLAVE PRINCIPAL (id)
+);
+
+
+/*Crear vendedor de tablas*/
+CREAR TABLA vendedor (
+    Yo dint ,
+    tipo_documento char(3) ,
+    numero_documento char(15) ,
+    nombres char(15) ,
+    apellido varchar(90) ,
+    salario decimal(8,2) ,
+    carácter_teléfono_celular(9),
+    correo electrónico varchar(80) ,
+    bit activo NOT NULL,
+    RESTRICCIÓN seller_pk CLAVE PRINCIPAL (id)
+)
+
+/*Crear tabla venta_detalle*/
+CREAR TABLA venta_detalle (
+    Yo dint ,
+    cantidad interna,
+    RESTRICCIÓN sale_detail_pk CLAVE PRINCIPAL (id)
+);
+
+/*crear relacion*/
+
+/* Relacionar tablas*/
+
+
+/* Ver estructura de venta_detalle */
+EXEC sp_columns @table_name = 'sale_detail';
+
+/* Ver estructura de vendedor */
+EXEC sp_columns @table_name = 'vendedor';
+
+/*Referencia: venta_cliente (tabla: venta)*/
+ALTER TABLE venta AÑADIR RESTRICCIÓN sale_client
+    CLAVE EXTRANJERA (client_id)
+    REFERENCIAS cliente (id);
+
+-- Referencia: sale_detail_clothes (tabla: sale_detail)
+ALTER TABLE sale_detail AGREGAR RESTRICCIÓN sale_detail_clothes
+    CLAVE EXTRANJERA (ropa_id)
+    REFERENCIAS ropa (id);
+
+/*Referencia: sale_detail_sale (tabla: sale_detail)*/
+ALTER TABLE sale_detail AGREGAR RESTRICCIÓN sale_detail_sale
+    CLAVE EXTRANJERA (sale_id)
+    REFERENCIAS venta (id);
+
+/*Referencia: venta_vendedor (tabla: venta)*/
+ALTER TABLE venta AGREGAR RESTRICCIÓN sale_seller
+    CLAVE EXTRANJERA (seller_id)
+    REFERENCIAS vendedor (id);
+
+/* Ver relaciones creadas entre las tablas de la base de datos */
+SELECCIONAR
+    fk.name [Restricción],
+    OBJECT_NAME(fk.parent_object_id) [Tabla],
+    COL_NAME(fc.parent_object_id,fc.parent_column_id) [Columna FK],
+    OBJECT_NAME (fk.referenced_object_id) AS [Tabla base],
+    COL_NAME(fc.referenced_object_id, fc.referenced_column_id) AS [Columna PK]
+DE
+    sys.foreign_keys fk
+    UNIÓN INTERNA sys.foreign_key_columns fc ON (fk.OBJECT_ID = fc.constraint_object_id)
+IR
+
+/* Eliminar una relacion */
+ALTER TABLE venta
+	DROP RESTRICCIÓN sale_client
+IR
+/* Ver relaciones creadas entre las tablas de la base de datos */
+SELECCIONAR
+    fk.name [Restricción],
+    OBJECT_NAME(fk.parent_object_id) [Tabla],
+    COL_NAME(fc.parent_object_id,fc.parent_column_id) [Columna FK],
+    OBJECT_NAME (fk.referenced_object_id) AS [Tabla base],
+    COL_NAME(fc.referenced_object_id, fc.referenced_column_id) AS [Columna PK]
+DE
+    sys.foreign_keys fk
+    UNIÓN INTERNA sys.foreign_key_columns fc ON (fk.OBJECT_ID = fc.constraint_object_id)
+IR
